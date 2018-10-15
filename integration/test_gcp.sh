@@ -17,7 +17,7 @@ GCS_PREFIX="hoard-integration-test"
 cd "$(dirname "$0")"
 
 # For CI we expect this to be set
-export GOOGLE_APPLICATION_CREDENTIALS="/gcloud-service-key.json"
+export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
 
 read -d '' HOARD_JSON_CONFIG << CONFIG
   {
@@ -45,6 +45,8 @@ echo ${HOARD_JSON_CONFIG} | jq '.'
 # Delete existing storage
 echo "Deleting existing GCS backing store..."
 gsutil rm "gs://${GCS_BUCKET}/${GCS_PREFIX}/**"
+
+set +e
 
 # Build unless asked not to
 echo "Bringing up integration test containers with docker-compose..."
